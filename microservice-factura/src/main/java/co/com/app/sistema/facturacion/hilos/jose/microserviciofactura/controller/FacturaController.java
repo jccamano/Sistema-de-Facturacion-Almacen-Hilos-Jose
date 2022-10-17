@@ -33,4 +33,9 @@ public class FacturaController extends CommonController<Factura, FacturaService>
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(this.service.save(facturaDb));
 	}
+	
+	@GetMapping("/buscar/{term}")
+	public ResponseEntity<?> buscarPorDescripcion(@PathVariable String term){
+		return ResponseEntity.ok(service.buscarFacturaPorDescripcion(term));
+	}
 }
