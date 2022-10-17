@@ -13,46 +13,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.com.app.sistema.facturacion.hilos.jose.microserviciofactura.models.entity.Factura;
+import co.com.app.sistema.facturacion.hilos.jose.microservicio.commons.controllers.CommonController;
+import co.com.app.sistema.facturacion.hilos.jose.microservicio.commons.facturas.models.entity.Factura;
 import co.com.app.sistema.facturacion.hilos.jose.microserviciofactura.service.FacturaService;
 
 @RestController
 @RequestMapping("/factura")
-public class FacturaController {
+public class FacturaController extends CommonController<Factura, FacturaService>{
 
-	@Autowired
-	private FacturaService service;
-
-	@GetMapping
-	public ResponseEntity<?> mostrarTodasLasFacturas() {
-		return ResponseEntity.ok().body(service.findAll());
-	}
-
-	@GetMapping("/{id}")
-	public ResponseEntity<?> mostrarUnaFactura(@PathVariable Long id) {
-		Optional<Factura> op = service.findById(id);
-		if (op.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		}
-		return ResponseEntity.ok(op.get());
-	}
-
-	@PostMapping
-	public ResponseEntity<?> crearFactura(@RequestBody Factura factura) {
-		Factura facturaBD = service.save(factura);
-		return ResponseEntity.status(HttpStatus.CREATED).body(facturaBD);
-	}
-	
 	@PutMapping("/{id}")
 	public ResponseEntity<?> editarFactura(@RequestBody Factura factura, @PathVariable Long id){
-		Optional<Factura> op = service.findById(id);
+		Optional<Factura> op = this.service.findById(id);
 		if (op.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
-		Factura facturaBD = op.get();
-		facturaBD.setDescripcion(factura.getDescripcion());
-		facturaBD.setObservacion(factura.getObservacion());
+		Factura facturaDb = op.get();
+		facturaDb.setDescripcion(factura.getDescripcion());
+		facturaDb.setObservacion(factura.getObservacion());
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(facturaBD));
+		return ResponseEntity.status(HttpStatus.CREATED).body(this.service.save(facturaDb));
 	}
 }

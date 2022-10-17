@@ -1,14 +1,22 @@
 package co.com.app.sistema.facturacion.hilos.jose.microserviciocliente.models.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import co.com.app.sistema.facturacion.hilos.jose.microservicio.commons.facturas.models.entity.Factura;
 
 @Entity
 @Table(name = "clientes")
@@ -24,12 +32,20 @@ public class Cliente {
 	private String direccion;
 	private String correo;
 	
+	@OneToMany(fetch = FetchType.LAZY)
+	private List<Factura> facturas;
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_creacion")
 	private Date fechaCreacion;
 	
 	@PrePersist
 	public void prePersist() {
 		this.fechaCreacion = new Date();
+	}
+		
+	public Cliente() {
+		this.facturas = new ArrayList<>();
 	}
 
 	public Long getId() {
@@ -87,6 +103,21 @@ public class Cliente {
 	public void setFechaCreacion(Date fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
 	}
+
+	public List<Factura> getFacturas() {
+		return facturas;
+	}
+
+	public void setFacturas(List<Factura> facturas) {
+		this.facturas = facturas;
+	}
 	
+	public void addFacturas(Factura factura) {
+		this.facturas.add(factura) ;
+	}
+	
+	public void removeFacturas(Factura factura) {
+		this.facturas.remove(factura);
+	}
 	
 }

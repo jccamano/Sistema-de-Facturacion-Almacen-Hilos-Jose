@@ -1,14 +1,21 @@
-package co.com.app.sistema.facturacion.hilos.jose.microserviciofactura.models.entity;
+package co.com.app.sistema.facturacion.hilos.jose.microservicio.commons.facturas.models.entity;
 
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
+
 
 @Entity
 @Table(name = "facturas")
@@ -22,8 +29,12 @@ public class Factura {
 	
 	private String observacion;
 	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_facturacion")
 	private Date fechaFacturacion;
+	
+	//@ManyToOne(fetch = FetchType.LAZY)
+	//private Cliente cliente;
 	
 	@PrePersist
 	public void prePersis() {
@@ -60,6 +71,31 @@ public class Factura {
 
 	public void setFechaFacturacion(Date fechaFacturacion) {
 		this.fechaFacturacion = fechaFacturacion;
-	}	
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		
+		if(this == obj) {
+			return true;
+		}
+		
+		if(!(obj instanceof Factura)) {
+			return false;
+		}
+		Factura f = (Factura) obj;
+		
+		
+		return this.id != null && this.id.equals(f.getId());
+	}
+
+	/*
+	 * public Cliente getCliente() { return cliente; }
+	 * 
+	 * public void setCliente(Cliente cliente) { this.cliente = cliente; }
+	 */
+	
+	
+	
 
 }
