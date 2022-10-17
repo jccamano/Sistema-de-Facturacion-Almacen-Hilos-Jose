@@ -21,7 +21,7 @@ import co.com.app.sistema.facturacion.hilos.jose.microservicioproducto.models.en
 import co.com.app.sistema.facturacion.hilos.jose.microservicioproducto.service.ProductoService;
 
 @RestController
-//@RequestMapping("/producto")
+@RequestMapping("/producto")
 public class ProductoController {
 
 	@Autowired
@@ -66,32 +66,28 @@ public class ProductoController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PostMapping("/registrar-con-foto")
-	public ResponseEntity<?> registrarProductoConFoto(Producto producto,
-			@RequestParam MultipartFile archivo) throws IOException{
-		if(!archivo.isEmpty()) {
-			producto.setFoto(archivo.getBytes());
-		}		
-		return ResponseEntity.status(HttpStatus.CREATED).body(producto);
-	}
-	
-	@PutMapping("/editar-con-foto/{id}")
-	public ResponseEntity<?> editarProductoConFoto(Producto producto,
-			@PathVariable Long id, @RequestParam MultipartFile archivo) throws IOException{
-		Optional<Producto> op = service.findById(id);
-		if(op.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		}
-		Producto productoBD = op.get();
-		productoBD.setNombre(producto.getNombre());
-		productoBD.setPrecio(producto.getPrecio());
-		
-		if(!archivo.isEmpty()) {
-			productoBD.setFoto(archivo.getBytes());
-		}
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(productoBD));
-	}
+	/*
+	 * @PostMapping("/registrar-con-foto") public ResponseEntity<?>
+	 * registrarProductoConFoto(Producto producto,
+	 * 
+	 * @RequestParam MultipartFile archivo) throws IOException{
+	 * if(!archivo.isEmpty()) { producto.setFoto(archivo.getBytes()); } return
+	 * ResponseEntity.status(HttpStatus.CREATED).body(producto); }
+	 * 
+	 * @PutMapping("/editar-con-foto/{id}") public ResponseEntity<?>
+	 * editarProductoConFoto(Producto producto,
+	 * 
+	 * @PathVariable Long id, @RequestParam MultipartFile archivo) throws
+	 * IOException{ Optional<Producto> op = service.findById(id); if(op.isEmpty()) {
+	 * return ResponseEntity.notFound().build(); } Producto productoBD = op.get();
+	 * productoBD.setNombre(producto.getNombre());
+	 * productoBD.setPrecio(producto.getPrecio());
+	 * 
+	 * if(!archivo.isEmpty()) { productoBD.setFoto(archivo.getBytes()); }
+	 * 
+	 * return
+	 * ResponseEntity.status(HttpStatus.CREATED).body(service.save(productoBD)); }
+	 */
 	
 	
 	
